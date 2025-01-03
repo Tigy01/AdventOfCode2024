@@ -38,7 +38,7 @@ func rotate90(dir vec2) vec2 {
 }
 
 func Run() error {
-	lines, err := filemanager.ReadLines("./internal/day6/realInput.txt")
+	lines, err := filemanager.ReadLines("./internal/day6/testInput.txt")
 	if err != nil {
 		return err
 	}
