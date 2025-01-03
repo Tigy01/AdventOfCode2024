@@ -1,9 +1,8 @@
 package day6
 
 import (
-	"bufio"
+	"aoc/internal/filemanager"
 	"fmt"
-	"os"
 )
 
 type vec2 struct {
@@ -39,7 +38,7 @@ func rotate90(dir vec2) vec2 {
 }
 
 func Run() error {
-	lines, err := readLines("./internal/day6/realInput.txt")
+	lines, err := filemanager.ReadLines("./internal/day6/realInput.txt")
 	if err != nil {
 		return err
 	}
@@ -60,10 +59,6 @@ func Run() error {
 
 		direction = rotate90(direction)
 	}
-	fmt.Println("")
-	for _, line := range new_lines {
-		fmt.Println(line)
-	}
 
 	var visited = 0
 	for _, value := range new_lines {
@@ -74,22 +69,8 @@ func Run() error {
 		}
 	}
 
-	fmt.Println(visited)
+    fmt.Println("visited:",visited)
 	return nil
-}
-
-func readLines(path string) ([]string, error) {
-	lines := make([]string, 0)
-	data, err := os.Open(path)
-	if err != nil {
-		return []string{}, err
-	}
-	fileScanner := bufio.NewScanner(data)
-	for fileScanner.Scan() {
-		line := fileScanner.Text()
-		lines = append(lines, line)
-	}
-	return lines, nil
 }
 
 func offsetUntilObstical(location vec2, offset vec2, lines []string) []string {
@@ -113,6 +94,7 @@ func offsetUntilObstical(location vec2, offset vec2, lines []string) []string {
 			line_changes[new_y] = string(updated_old_line)
 			break
 		}
+
 		updated_line[new_x] = 'X'
 		line_changes[new_y] = string(updated_line)
 
@@ -121,14 +103,17 @@ func offsetUntilObstical(location vec2, offset vec2, lines []string) []string {
 		} else {
 			break
 		}
+
 		if (new_x > 0 && offset.x < 0) || (new_x >= 0 && offset.x >= 0) {
 			new_x += offset.x
 		} else {
 			break
 		}
+
 		if new_y == len(lines) {
 			break
 		}
+
 		if new_x == len(line) {
 			break
 		}
