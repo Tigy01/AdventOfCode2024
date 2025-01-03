@@ -11,43 +11,19 @@ import (
 )
 
 func main() {
-	fmt.Println("Advent OF Code 2024:\n")
+	fmt.Println("Advent Of Code 2024:\n")
+	runDay(1, day1.Run)
+	runDay(2, day2.Run)
+	runDay(3, day3.Run)
+	runDay(4, day4.Run)
+	//	runDay(5, day5.Run)
+	runDay(6, day6.Run)
+}
 
+func runDay(dayNum int, run func() error) {
 	start := time.Now()
-	fmt.Println("Day1:")
-	err := day1.Run()
-	if err != nil {
-		fmt.Printf("err: %v\n", err)
-	}
-	fmt.Printf("Time Taken: %v\n\n", time.Since(start).Microseconds())
-
-	start = time.Now()
-	fmt.Println("Day2:")
-	err = day2.Run()
-	if err != nil {
-		fmt.Printf("err: %v\n", err)
-	}
-	fmt.Printf("Time Taken: %v\n\n", time.Since(start).Microseconds())
-
-	start = time.Now()
-	fmt.Println("Day3:")
-	err = day3.Run()
-	if err != nil {
-		fmt.Printf("err: %v\n", err)
-	}
-	fmt.Printf("Time Taken: %v\n\n", time.Since(start).Microseconds())
-
-	start = time.Now()
-	fmt.Println("Day4:")
-	err = day4.Run()
-	if err != nil {
-		fmt.Printf("err: %v\n", err)
-	}
-	fmt.Printf("Time Taken: %v\n\n", time.Since(start).Microseconds())
-
-	start = time.Now()
-	fmt.Println("Day6:")
-	err = day6.Run()
+	fmt.Printf("Day %v:\n", dayNum)
+	err := run()
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
 	}
