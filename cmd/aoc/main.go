@@ -5,6 +5,7 @@ import (
 	"aoc/internal/day2"
 	"aoc/internal/day3"
 	"aoc/internal/day4"
+	"aoc/internal/day5"
 	"aoc/internal/day6"
 	"fmt"
 	"time"
@@ -16,7 +17,7 @@ func main() {
 	runDay(2, day2.Run)
 	runDay(3, day3.Run)
 	runDay(4, day4.Run)
-	//	runDay(5, day5.Run)
+	runDay(5, day5.Run)
 	runDay(6, day6.Run)
 }
 
