@@ -1,24 +1,25 @@
 package day1
 
 import (
-	"aoc/internal/filemanager"
+	"aoc/internal/library/filemanager"
 	"fmt"
+	"log"
 	"slices"
 	"strconv"
 )
 
-func Run() error {
+func Run() (output string) {
 	//	lines, err := filemanager.ReadLines("./internal/day1/testInput.txt")
 	lines, err := filemanager.ReadLines("./internal/day1/realInput.txt")
 	if err != nil {
-		return err
+		log.Fatal("err: %v", err)
 	}
 	var left = []int{}
 	var right = []int{}
 	for _, line := range lines {
 		var num_list, err = getNumbersFromLine(line)
 		if err != nil {
-			return err
+			log.Fatal("err: %v", err)
 		}
 		left = append(left, num_list[0])
 		right = append(right, num_list[1])
@@ -33,18 +34,21 @@ func Run() error {
 	for _, val := range frequencies {
 		total_frequencies += val
 	}
-	fmt.Println("distances:", total_distances)
-	fmt.Println("frequencies:", total_frequencies)
-	return nil
+	output += fmt.Sprintln("distances:", total_distances)
+	output += fmt.Sprintln("frequencies:", total_frequencies)
+	return
 }
 
 func getFrequencies(left_values []int, right_values []int) (frequencies []int) {
 	var occurances = 0
 	for _, left_num := range left_values {
-		for _, right_num := range right_values {
+		for i := len(right_values) - 1; i > -1; i-- {
+            right_num :=right_values[i]
 			if left_num == right_num {
 				occurances += 1
 			}
+			right_values = slices.Delete(right_values, i, i+1)
+
 		}
 		frequencies = append(frequencies, left_num*occurances)
 		occurances = 0
@@ -59,22 +63,6 @@ func getDistances(left_values []int, right_values []int) []int {
 	for i := range left_values {
 		pairs = append(pairs, distance(right_values[i], left_values[i]))
 	}
-	//	for len(left_values) > 0 {
-	//		left_min := getMin(left_values)
-	//		right_min := getMin(right_values)
-	//		for i := range left_values {
-	//			if left_values[i] == left_min {
-	//				left_values = slices.Delete(left_values, i, i+1)
-	//				break
-	//			}
-	//			if right_values[i] == right_min {
-	//				right_values = slices.Delete(right_values, i, i+1)
-	//				break
-	//			}
-	//			pairs = append(pairs, distance(right_min, left_min))
-	//		}
-	//	}
-
 	return pairs
 }
 

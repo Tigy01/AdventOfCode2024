@@ -2,16 +2,17 @@ package day3
 
 import (
 	"aoc/internal/day1"
-	"aoc/internal/filemanager"
+	"aoc/internal/library/filemanager"
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 )
 
-func Run() (err error) {
+func Run() (output string) {
 	data, err := filemanager.ReadFullFile("./internal/day3/realInput.txt")
 	if err != nil {
-		return err
+		log.Fatal("err: %v", err)
 	}
 
 	var total = 0
@@ -19,27 +20,27 @@ func Run() (err error) {
 
 	sections, err := getValidSections(data)
 	if err != nil {
-		return err
+		log.Fatal("err: %v", err)
 	}
 
 	operations, err := getOps(sections)
 	if err != nil {
-		return err
+		log.Fatal("err: %v", err)
 	}
 
 	do_characters, err := getDoSections(data)
 	if err != nil {
-		return err
+		log.Fatal("err: %v", err)
 	}
 
 	do_sections, err := getValidSections(do_characters)
 	if err != nil {
-		return err
+		log.Fatal("err: %v", err)
 	}
 
 	do_operations, err := getOps(do_sections)
 	if err != nil {
-		return err
+		log.Fatal("err: %v", err)
 	}
 
 	for _, op := range operations {
@@ -50,9 +51,9 @@ func Run() (err error) {
 		do_total += op[0] * op[1]
 	}
 
-	fmt.Println("Total:", total)
-	fmt.Println("Do Total:", do_total)
-	return nil
+	output += fmt.Sprintln("Total:", total)
+	output += fmt.Sprintln("Do Total:", do_total)
+    return output
 }
 
 func getDoSections(data string) (string, error) {

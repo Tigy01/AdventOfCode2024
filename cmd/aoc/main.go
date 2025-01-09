@@ -7,26 +7,46 @@ import (
 	"aoc/internal/day4"
 	"aoc/internal/day5"
 	"aoc/internal/day6"
+	"aoc/internal/day7"
+	"aoc/internal/day8"
+	"aoc/internal/day9"
+
+	"aoc/internal/library/errors"
+	"os"
+	"runtime/pprof"
+
 	"fmt"
 	"time"
 )
 
 func main() {
+	file := errors.Try(os.Create("current.prof"))
+
+	pprof.StartCPUProfile(file)
+	defer pprof.StopCPUProfile()
+
 	fmt.Println("Advent Of Code 2024:\n")
-	runDay(1, day1.Run)
-	runDay(2, day2.Run)
-	runDay(3, day3.Run)
-	runDay(4, day4.Run)
-	runDay(5, day5.Run)
-	runDay(6, day6.Run)
+	dayCount := 9
+	doneChan := make(chan bool, dayCount)
+	go runDay(1, day1.Run, doneChan)
+	go runDay(2, day2.Run, doneChan)
+	go runDay(3, day3.Run, doneChan)
+	go runDay(4, day4.Run, doneChan)
+	go runDay(5, day5.Run, doneChan)
+	go runDay(6, day6.Run, doneChan)
+	go runDay(7, day7.Run, doneChan)
+	go runDay(8, day8.Run, doneChan)
+	go runDay(9, day9.Run, doneChan)
+	for range dayCount {
+		<-doneChan
+	}
 }
 
-func runDay(dayNum int, run func() error) {
+func runDay(dayNum int, run func() string, done chan bool) {
 	start := time.Now()
+	output := run()
 	fmt.Printf("Day %v:\n", dayNum)
-	err := run()
-	if err != nil {
-		fmt.Printf("err: %v\n", err)
-	}
-	fmt.Printf("Time Taken: %v\n\n", time.Since(start).Microseconds())
+	fmt.Printf(output)
+	fmt.Printf("Time Taken: %v\n\n", time.Since(start).Milliseconds())
+	done <- true
 }

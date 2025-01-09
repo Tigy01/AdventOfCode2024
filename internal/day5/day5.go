@@ -1,8 +1,9 @@
 package day5
 
 import (
-	"aoc/internal/filemanager"
+	"aoc/internal/library/filemanager"
 	"fmt"
+	"log"
 	"slices"
 	"strconv"
 	"strings"
@@ -20,16 +21,16 @@ func (node) new(value int, after_values ...int) node {
 	return node{value, after_values}
 }
 
-func Run() (err error) {
+func Run() (output string){
 	lines, err := filemanager.ReadLines("./internal/day5/realInput.txt")
 	if err != nil {
-		return err
+		log.Fatal("err: %v\n", err)
 	}
 
 	var rules = getRules(lines)
 	nodes, err := getNodesFromRuleset(rules)
 	if err != nil {
-		return err
+		log.Fatal("err: %v\n", err)
 	}
 
 	var updates = lines[len(rules)+1:]
@@ -38,18 +39,18 @@ func Run() (err error) {
 	for _, update := range updates {
 		middle, err := getMiddleOfUpdate(false, update, nodes)
 		if err != nil {
-			return err
+			log.Fatal("err: %v\n", err)
 		}
 		total += middle
 		fixed_middle, err := getMiddleOfUpdate(true, update, nodes)
 		if err != nil {
-			return err
+			log.Fatal("err: %v\n", err)
 		}
 		fixed_total += fixed_middle
 	}
-	fmt.Printf("Output - %v\n", total)
-	fmt.Printf("Fixed Output - %v\n", fixed_total)
-	return nil
+	output+=fmt.Sprintf("Output - %v\n", total)
+	output+=fmt.Sprintf("Fixed Output - %v\n", fixed_total)
+    return
 }
 
 func sortUpdate(keys []int, nodes []*node) (sorted_keys []int) {

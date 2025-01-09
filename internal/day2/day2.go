@@ -2,24 +2,25 @@ package day2
 
 import (
 	"aoc/internal/day1"
-	"aoc/internal/filemanager"
+	"aoc/internal/library/filemanager"
 	"fmt"
+	"log"
 	"slices"
 	"strconv"
 )
 
-func Run() error {
+func Run() (output string) {
 	lines, err := filemanager.ReadLines("./internal/day2/realInput.txt")
 
 	num_safe := 0
 	num_safe_with_damp := 0
 	if err != nil {
-		return err
+		log.Fatal("err: %v", err)
 	}
 	for _, line := range lines {
-		var num_list, err = getNumbersFromLine(line)
+		var num_list, err = GetNumbersFromLine(line)
 		if err != nil {
-			return err
+			log.Fatal("err: %v", err)
 		}
 
 		if isSafe(num_list) {
@@ -30,9 +31,9 @@ func Run() error {
 			num_safe_with_damp += 1
 		}
 	}
-	fmt.Println("Number Safe:", num_safe)
-	fmt.Println("Number Safe With Dampening:", num_safe_with_damp)
-	return nil
+	output += fmt.Sprintln("Number Safe:", num_safe)
+	output += fmt.Sprintln("Number Safe With Dampening:", num_safe_with_damp)
+	return output
 }
 
 const INCREASING = 0
@@ -145,7 +146,7 @@ func dampen_list(num_list []int, i int) bool {
 	return safe_with_dampen
 }
 
-func getNumbersFromLine(line string) (nums []int, err error) {
+func GetNumbersFromLine(line string) (nums []int, err error) {
 	var num_buff = []rune{}
 	for i, char := range line {
 		if day1.IsNum(char) {

@@ -1,20 +1,19 @@
 package day4
 
 import (
-	"aoc/internal/filemanager"
+	"aoc/internal/library/filemanager"
+	"aoc/internal/library/vectors"
 	"fmt"
+	"log"
 )
 
-type vec2 struct {
-	x int
-	y int
-}
+type vec2 = vectors.Vec2
 
-func Run() error {
+func Run() (output string) {
 	//	lines, err := filemanager.ReadLines("./internal/day4/testInput.txt")
 	lines, err := filemanager.ReadLines("./internal/day4/realInput.txt")
 	if err != nil {
-		return err
+		log.Fatal("err: %v\n", err)
 	}
 
 	var matches = 0
@@ -27,13 +26,13 @@ func Run() error {
 			}
 		}
 	}
-	fmt.Println("XMAS count:", matches)
-	fmt.Println("X-MAS count:", crosses)
-	return nil
+	output += fmt.Sprintln("XMAS count:", matches)
+	output += fmt.Sprintln("X-MAS count:", crosses)
+	return
 }
 
 func checkForX(lines []string, position vec2, token string) bool {
-	if lines[position.y][position.x] != token[len(token)/2] {
+	if lines[position.Y][position.X] != token[len(token)/2] {
 		return false
 	}
 
@@ -70,28 +69,28 @@ func isReversed(str, token string) bool {
 
 func getOffsetFromCenter(lines []string, position, direction vec2) string {
 	output := ""
-	if position.y+direction.y < 0 || position.y+direction.y >= len(lines) {
+	if position.Y+direction.Y < 0 || position.Y+direction.Y >= len(lines) {
 		return ""
 	}
-	if position.x+direction.x < 0 || position.x+direction.x >= len(lines) {
+	if position.X+direction.X < 0 || position.X+direction.X >= len(lines) {
 		return ""
 	}
-	if position.y-direction.y < 0 || position.y-direction.y >= len(lines) {
+	if position.Y-direction.Y < 0 || position.Y-direction.Y >= len(lines) {
 		return ""
 	}
-	if position.x-direction.x < 0 || position.x-direction.x >= len(lines) {
+	if position.X-direction.X < 0 || position.X-direction.X >= len(lines) {
 		return ""
 	}
 
-	output += string(lines[position.y+direction.y][position.x+direction.x])
-	output += string(lines[position.y][position.x])
-	output += string(lines[position.y-direction.y][position.x-direction.x])
+	output += string(lines[position.Y+direction.Y][position.X+direction.X])
+	output += string(lines[position.Y][position.X])
+	output += string(lines[position.Y-direction.Y][position.X-direction.X])
 
 	return output
 }
 
 func checkDirections(lines []string, position vec2, token string) int {
-	if lines[position.y][position.x] != token[len(token)-1] && lines[position.y][position.x] != token[0] {
+	if lines[position.Y][position.X] != token[len(token)-1] && lines[position.Y][position.X] != token[0] {
 		return 0
 	}
 
@@ -115,23 +114,23 @@ func getOffset(lines []string, length int, position, offset vec2) (output string
 	var x_len = 0
 
 	for range length {
-		output += string(lines[position.y][position.x])
-		if (position.y > 0 && offset.y < 0) || (position.y >= 0 && offset.y >= 0) {
-			position.y += offset.y
+		output += string(lines[position.Y][position.X])
+		if (position.Y > 0 && offset.Y < 0) || (position.Y >= 0 && offset.Y >= 0) {
+			position.Y += offset.Y
 		} else {
 			break
 		}
-		if position.y == y_len {
+		if position.Y == y_len {
 			break
 		}
 
-		x_len = len(lines[position.y])
-		if (position.x > 0 && offset.x < 0) || (position.x >= 0 && offset.x >= 0) {
-			position.x += offset.x
+		x_len = len(lines[position.Y])
+		if (position.X > 0 && offset.X < 0) || (position.X >= 0 && offset.X >= 0) {
+			position.X += offset.X
 		} else {
 			break
 		}
-		if position.x == x_len {
+		if position.X == x_len {
 			break
 		}
 	}
