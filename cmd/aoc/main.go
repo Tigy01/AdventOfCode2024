@@ -45,8 +45,9 @@ func main() {
 func runDay(dayNum int, run func() string, done chan bool) {
 	start := time.Now()
 	output := run()
-	fmt.Printf("Day %v:\n", dayNum)
-	fmt.Printf(output)
-	fmt.Printf("Time Taken: %v\n\n", time.Since(start).Milliseconds())
+    final:= fmt.Sprintf("Day %v:\n", dayNum)
+	final+=fmt.Sprintf(output)
+	final+=fmt.Sprintf("Time Taken: %v\n\n", time.Since(start).Milliseconds())
+    fmt.Println(final)
 	done <- true
 }
