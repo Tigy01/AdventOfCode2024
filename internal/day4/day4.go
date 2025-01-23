@@ -1,20 +1,17 @@
 package day4
 
 import (
+	"aoc/internal/library/errors"
 	"aoc/internal/library/filemanager"
 	"aoc/internal/library/vectors"
 	"fmt"
-	"log"
 )
 
 type vec2 = vectors.Vec2
 
 func Run() (output string) {
 	//	lines, err := filemanager.ReadLines("./internal/day4/testInput.txt")
-	lines, err := filemanager.ReadLines("./internal/day4/realInput.txt")
-	if err != nil {
-		log.Fatal("err: %v\n", err)
-	}
+	lines := errors.Try(filemanager.ReadLines("./internal/day4/realInput.txt"))
 
 	var matches = 0
 	var crosses = 0
